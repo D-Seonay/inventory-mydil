@@ -25,3 +25,4 @@ yarn-error.log*
 # local files
 package-lock.json
 discord.xml
+.env
