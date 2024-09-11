@@ -13,6 +13,8 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <div>
           <Link to="/" className="text-xl">Accueil</Link>
+          <Link to="/protected" className="ml-4">Page Protégée</Link>
+          {isLoggedIn && <Link to="/account" className="ml-4">Mon Compte</Link>}
         </div>
         <div>
           {isLoggedIn ? (
