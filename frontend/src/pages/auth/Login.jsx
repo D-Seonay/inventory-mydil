@@ -81,6 +81,12 @@ const Login = () => {
           >
             Se connecter
           </button>
+          <p className="mt-4 text-center">
+            Vous n'avez pas de compte ?{' '}
+            <a href="/register" className="text-blue-500">
+              Inscrivez-vous
+            </a>
+          </p>
           {error && <p className="mt-4 text-red-500">{error}</p>}
         </form>
       </div>
