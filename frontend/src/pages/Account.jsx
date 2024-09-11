@@ -1,14 +1,13 @@
-// src/pages/Register.jsx
-import React, { useState } from 'react';
+// src/pages/Account.jsx
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Account = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
     firstName: '',
     lastName: '',
     age: '',
@@ -20,6 +19,25 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Récupérer les informations de l'utilisateur
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+        const response = await axios.get('http://localhost:5001/account', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setFormData(response.data);
+      } catch (err) {
+        console.error('Erreur lors de la récupération des informations utilisateur:', err);
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,31 +52,32 @@ const Register = () => {
     setError('');
     setSuccess('');
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas.');
-      return;
-    }
-
     try {
-      await axios.post('http://localhost:5001/register', formData);
-      setSuccess('Inscription réussie !');
-      navigate('/login'); // Rediriger vers la page de connexion après l'inscription
+      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      await axios.put('http://localhost:5001/account', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      setSuccess('Informations mises à jour avec succès !');
     } catch (err) {
-      setError(err.response?.data?.message || 'Erreur lors de l\'inscription.');
+      setError(err.response?.data?.message || 'Erreur lors de la mise à jour des informations.');
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6">Inscription</h1>
+    <div className="max-w-4xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md">
+      <h2 className="text-2xl font-bold mb-6">Mon Compte</h2>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-500 mb-4">{success}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Carte pour les informations principales */}
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Informations Principales</h2>
+      <form onSubmit={handleSubmit}>
+
+        {/* Informations principales */}
+        <div className="mb-6 border-b border-gray-300 pb-4">
+          <h3 className="text-xl font-semibold mb-4">Informations Principales</h3>
+          
           <div className="mb-4">
             <label className="block text-sm font-medium">Nom d'utilisateur</label>
             <input
@@ -66,8 +85,8 @@ const Register = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+              disabled
             />
           </div>
           <div className="mb-4">
@@ -77,8 +96,7 @@ const Register = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -88,26 +106,15 @@ const Register = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Confirmer le mot de passe</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-              required
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
         </div>
 
-        {/* Carte pour les informations secondaires */}
-        <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Informations Secondaires</h2>
+        {/* Informations secondaires */}
+        <div className="mb-6 border-b border-gray-300 pb-4">
+          <h3 className="text-xl font-semibold mb-4">Informations Secondaires</h3>
+
           <div className="mb-4">
             <label className="block text-sm font-medium">Prénom</label>
             <input
@@ -115,7 +122,7 @@ const Register = () => {
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -125,7 +132,7 @@ const Register = () => {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -135,7 +142,7 @@ const Register = () => {
               name="age"
               value={formData.age}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -145,7 +152,7 @@ const Register = () => {
               name="weight"
               value={formData.weight}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -155,7 +162,7 @@ const Register = () => {
               name="height"
               value={formData.height}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
           <div className="mb-4">
@@ -164,7 +171,7 @@ const Register = () => {
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="">Sélectionner</option>
               <option value="male">Homme</option>
@@ -178,20 +185,20 @@ const Register = () => {
               name="goal"
               value={formData.goal}
               onChange={handleChange}
-              className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
         >
-          S'inscrire
+          Mettre à jour
         </button>
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Account;
