@@ -45,18 +45,55 @@ const authenticateJWT = (req, res, next) => {
   }
 };
 
-// Route pour la création de compte
+// Route pour l'inscription d'un utilisateur
 app.post('/register', (req, res) => {
-  const { username, password } = req.body;
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) return res.status(500).json({ error: err.message });
+  const { firstName, lastName, username, password, email, age, weight, height, gender, goal } = req.body;
 
-    db.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashedPassword], (err, results) => {
-      if (err) return res.status(500).json({ error: err.message });
-      res.status(201).json({ message: 'Utilisateur créé avec succès' });
+  // Vérifier si le pseudo existe déjà
+  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la vérification du pseudo:', err);
+      return res.status(500).json({ error: 'Erreur interne' });
+    }
+    if (results.length > 0) {
+      return res.status(400).json({ message: 'Ce pseudo est déjà pris' });
+    }
+
+    // Hasher le mot de passe
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error('Erreur lors du hashage du mot de passe:', err);
+        return res.status(500).json({ error: 'Erreur de hashage du mot de passe' });
+      }
+
+      // Insérer les informations dans la table des utilisateurs
+      db.query(
+        'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
+        [username, hashedPassword, email],
+        (err, result) => {
+          if (err) {
+            console.error('Erreur lors de l\'inscription de l\'utilisateur:', err);
+            return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
+          }
+
+          // Insérer les informations dans la table du profil utilisateur
+          db.query(
+            'INSERT INTO user_profile (user_id, first_name, last_name, age, weight, height, gender, goal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [result.insertId, firstName, lastName, age, weight, height, gender, goal],
+            (err) => {
+              if (err) {
+                console.error('Erreur lors de l\'inscription du profil utilisateur:', err);
+                return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
+              }
+              res.status(201).json({ message: 'Inscription réussie' });
+            }
+          );
+        }
+      );
     });
   });
 });
+
 
 // Route pour la connexion
 app.post('/login', (req, res) => {
@@ -85,6 +122,18 @@ app.post('/logout', authenticateJWT, (req, res) => {
 // Route protégée
 app.get('/protected', authenticateJWT, (req, res) => {
   res.json({ message: 'This is a protected route' });
+});
+
+
+app.get('/profile', authenticateJWT, (req, res) => {
+  const userId = req.user.id;
+  
+  db.query('SELECT * FROM user_profile WHERE user_id = ?', [userId], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+    if (results.length === 0) return res.status(404).json({ error: 'Profil non trouvé' });
+    
+    res.json(results[0]);
+  });
 });
 
 // Démarrer le serveur
