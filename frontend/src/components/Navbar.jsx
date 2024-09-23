@@ -5,6 +5,8 @@ import { useUser } from '../context/UserContext';
 import { CiLogin } from "react-icons/ci";
 
 
+
+
 const Navbar = () => {
   const { username, isLoggedIn, logout } = useUser();
 
@@ -15,6 +17,7 @@ const Navbar = () => {
           <Link to="/" className="text-xl">Accueil</Link>
           <Link to="/protected" className="ml-4">Page Protégée</Link>
           {isLoggedIn && <Link to="/account" className="ml-4">Mon Compte</Link>}
+          <Link to="/category" className="ml-4">Catégories</Link>
         </div>
         <div>
           {isLoggedIn ? (

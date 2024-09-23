@@ -47,10 +47,10 @@ const authenticateJWT = (req, res, next) => {
 
 // Route pour l'inscription d'un utilisateur
 app.post('/register', (req, res) => {
-  const { firstName, lastName, username, password, email, age, weight, height, gender, goal } = req.body;
+  const { firstName, lastName, username, password, email, promotion, role } = req.body;
 
   // Vérifier si le pseudo existe déjà
-  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+  db.query('SELECT * FROM user WHERE username = ?', [username], (err, results) => {
     if (err) {
       console.error('Erreur lors de la vérification du pseudo:', err);
       return res.status(500).json({ error: 'Erreur interne' });
@@ -68,13 +68,14 @@ app.post('/register', (req, res) => {
 
       // Insérer les informations dans la table des utilisateurs
       db.query(
-        'INSERT INTO users (username, password, email) VALUES (?, ?, ?)',
-        [username, hashedPassword, email],
+        'INSERT INTO user (first_name, last_name, username, password, email, promotion, role) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [firstName, lastName, username, hashedPassword, email, promotion, role],
         (err, result) => {
           if (err) {
             console.error('Erreur lors de l\'inscription de l\'utilisateur:', err);
             return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
           }
+          res.status(201).json({ message: 'Utilisateur inscrit avec succès' });
         }
       );
     });
@@ -85,7 +86,7 @@ app.post('/register', (req, res) => {
 // Route pour la connexion
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
-  db.query('SELECT * FROM users WHERE username = ?', [username], (err, results) => {
+  db.query('SELECT * FROM user WHERE username = ?', [username], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
     if (results.length === 0) return res.status(400).json({ message: 'Nom d\'utilisateur ou mot de passe incorrect' });
 
@@ -112,17 +113,194 @@ app.get('/protected', authenticateJWT, (req, res) => {
 });
 
 
-app.get('/profile', authenticateJWT, (req, res) => {
-  const userId = req.user.id;
+// Route pour créer une nouvelle catégorie
+app.post('/category', authenticateJWT, (req, res) => {
+  const { name } = req.body;
 
-  db.query('SELECT username, email, created_at, updated_at FROM users WHERE id = ?', [userId], (err, results) => {
+  db.query('INSERT INTO category (name) VALUES (?)', [name], (err, result) => {
     if (err) {
-      console.error('Erreur de base de données:', err); // Ajoute ceci pour voir l'erreur
-      return res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+      console.error('Erreur lors de la création de la catégorie:', err);
+      return res.status(500).json({ error: 'Erreur lors de la création de la catégorie' });
     }
-    if (results.length === 0) return res.status(404).json({ error: 'Profil non trouvé' });
+    res.status(201).json({ message: 'Catégorie créée avec succès', categoryId: result.insertId });
+  });
+});
 
-    res.json(results[0]);
+// Route pour récupérer toutes les catégories
+app.get('/category', authenticateJWT, (req, res) => {
+  db.query('SELECT * FROM category', (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des catégories:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération des catégories' });
+    }
+    res.json(results);
+  });
+});
+
+// Route pour mettre à jour une catégorie
+app.put('/category/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+
+  db.query('UPDATE category SET name = ? WHERE id = ?', [name, id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la mise à jour de la catégorie:', err);
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour de la catégorie' });
+    }
+    res.json({ message: 'Catégorie mise à jour avec succès' });
+  });
+});
+
+// Route pour supprimer une catégorie
+app.delete('/category/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+
+  db.query('DELETE FROM category WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la suppression de la catégorie:', err);
+      return res.status(500).json({ error: 'Erreur lors de la suppression de la catégorie' });
+    }
+    res.json({ message: 'Catégorie supprimée avec succès' });
+  });
+});
+
+// Route pour créer un nouveau matériel
+app.post('/equipment', authenticateJWT, (req, res) => {
+  const { name, category_id, stock_quantity, available_quantity, description } = req.body;
+
+  db.query(
+    'INSERT INTO equipment (name, category_id, stock_quantity, available_quantity, description) VALUES (?, ?, ?, ?, ?)',
+    [name, category_id, stock_quantity, available_quantity, description],
+    (err, result) => {
+      if (err) {
+        console.error('Erreur lors de la création du matériel:', err);
+        return res.status(500).json({ error: 'Erreur lors de la création du matériel' });
+      }
+      res.status(201).json({ message: 'Matériel créé avec succès', equipmentId: result.insertId });
+    }
+  );
+});
+
+// Route pour récupérer tout le matériel
+app.get('/equipment', authenticateJWT, (req, res) => {
+  db.query('SELECT * FROM equipment', (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération du matériel:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération du matériel' });
+    }
+    res.json(results);
+  });
+});
+
+// Route pour mettre à jour un matériel
+app.put('/equipment/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+  const { name, category_id, stock_quantity, available_quantity, description } = req.body;
+
+  db.query(
+    'UPDATE equipment SET name = ?, category_id = ?, stock_quantity = ?, available_quantity = ?, description = ? WHERE id = ?',
+    [name, category_id, stock_quantity, available_quantity, description, id],
+    (err, result) => {
+      if (err) {
+        console.error('Erreur lors de la mise à jour du matériel:', err);
+        return res.status(500).json({ error: 'Erreur lors de la mise à jour du matériel' });
+      }
+      res.json({ message: 'Matériel mis à jour avec succès' });
+    }
+  );
+});
+
+// Route pour supprimer un matériel
+app.delete('/equipment/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+
+  db.query('DELETE FROM equipment WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la suppression du matériel:', err);
+      return res.status(500).json({ error: 'Erreur lors de la suppression du matériel' });
+    }
+    res.json({ message: 'Matériel supprimé avec succès' });
+  });
+});
+
+// Route pour créer une nouvelle réservation
+app.post('/reservation', authenticateJWT, (req, res) => {
+  const { equipment_id, start_date, end_date } = req.body;
+  const user_id = req.user.id;
+
+  db.query(
+    'INSERT INTO reservation (user_id, equipment_id, start_date, end_date) VALUES (?, ?, ?, ?)',
+    [user_id, equipment_id, start_date, end_date],
+    (err, result) => {
+      if (err) {
+        console.error('Erreur lors de la création de la réservation:', err);
+        return res.status(500).json({ error: 'Erreur lors de la création de la réservation' });
+      }
+      res.status(201).json({ message: 'Réservation créée avec succès', reservationId: result.insertId });
+    }
+  );
+});
+
+// Route pour récupérer les réservations d'un utilisateur
+app.get('/reservations', authenticateJWT, (req, res) => {
+  const user_id = req.user.id;
+
+  db.query('SELECT * FROM reservation WHERE user_id = ?', [user_id], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des réservations:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération des réservations' });
+    }
+    res.json(results);
+  });
+});
+
+// Route pour mettre à jour le statut d'une réservation
+app.put('/reservation/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  db.query('UPDATE reservation SET status = ? WHERE id = ?', [status, id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la mise à jour de la réservation:', err);
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour de la réservation' });
+    }
+    res.json({ message: 'Réservation mise à jour avec succès' });
+  });
+});
+
+// Route pour supprimer une réservation
+app.delete('/reservation/:id', authenticateJWT, (req, res) => {
+  const { id } = req.params;
+
+  db.query('DELETE FROM reservation WHERE id = ?', [id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la suppression de la réservation:', err);
+      return res.status(500).json({ error: 'Erreur lors de la suppression de la réservation' });
+    }
+    res.json({ message: 'Réservation supprimée avec succès' });
+  });
+});
+
+// Route pour mettre à jour le profil utilisateur
+app.put('/profile', authenticateJWT, (req, res) => {
+  const userId = req.user.id;
+  const { first_name, last_name, email, password } = req.body;
+
+  // Optionnel : Hasher le nouveau mot de passe si fourni
+  const updateUserQuery = password
+    ? 'UPDATE user SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?'
+    : 'UPDATE user SET first_name = ?, last_name = ?, email = ? WHERE id = ?';
+
+  const queryParams = password
+    ? [first_name, last_name, email, bcrypt.hashSync(password, 10), userId]
+    : [first_name, last_name, email, userId];
+
+  db.query(updateUserQuery, queryParams, (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la mise à jour du profil:', err);
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour du profil' });
+    }
+    res.json({ message: 'Profil mis à jour avec succès' });
   });
 });
 
