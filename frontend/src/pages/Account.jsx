@@ -8,24 +8,16 @@ const Account = () => {
     username: '',
     email: '',
     password: '',
-    firstName: '',
-    lastName: '',
-    age: '',
-    weight: '',
-    height: '',
-    gender: '',
-    goal: ''
   });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Récupérer les informations de l'utilisateur
+    // Fonction pour récupérer les informations de l'utilisateur
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-        const response = await axios.get('http://localhost:5001/account', {
+        const response = await axios.get('http://localhost:5001/profile', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -33,24 +25,25 @@ const Account = () => {
         setFormData(response.data);
       } catch (err) {
         console.error('Erreur lors de la récupération des informations utilisateur:', err);
+        console.log(err.response); // Ajoute ceci pour voir la réponse d'erreur
+        setMessage('Erreur lors de la récupération des informations.');
       }
     };
 
-    fetchUserData();
+    fetchUserData(); // Appelle la fonction pour récupérer les données
   }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value // Met à jour le champ correspondant dans le state
     });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
+    e.preventDefault(); // Empêche le comportement par défaut du formulaire
+    setMessage('');
 
     try {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -59,135 +52,48 @@ const Account = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      setSuccess('Informations mises à jour avec succès !');
+      setMessage('Informations mises à jour avec succès !');
     } catch (err) {
-      setError(err.response?.data?.message || 'Erreur lors de la mise à jour des informations.');
+      setMessage(err.response?.data?.message || 'Erreur lors de la mise à jour des informations.');
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 bg-white p-8 shadow-lg rounded-md">
+    <div className="max-w-md mx-auto mt-10 bg-white p-8 shadow-lg rounded-md">
       <h2 className="text-2xl font-bold mb-6">Mon Compte</h2>
-
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      {success && <p className="text-green-500 mb-4">{success}</p>}
+      {message && <p className="text-red-500 mb-4">{message}</p>}
 
       <form onSubmit={handleSubmit}>
-
-        {/* Informations principales */}
-        <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-xl font-semibold mb-4">Informations Principales</h3>
-          
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Nom d'utilisateur</label>
-            <input
-              type="text"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-              disabled
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Mot de passe</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Nom d'utilisateur</label>
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            disabled // Champ désactivé pour éviter les modifications
+          />
         </div>
-
-        {/* Informations secondaires */}
-        <div className="mb-6 border-b border-gray-300 pb-4">
-          <h3 className="text-xl font-semibold mb-4">Informations Secondaires</h3>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Prénom</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Nom de famille</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Âge</label>
-            <input
-              type="number"
-              name="age"
-              value={formData.age}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Poids (kg)</label>
-            <input
-              type="number"
-              name="weight"
-              value={formData.weight}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Taille (m)</label>
-            <input
-              type="number"
-              name="height"
-              value={formData.height}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Sexe</label>
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            >
-              <option value="">Sélectionner</option>
-              <option value="male">Homme</option>
-              <option value="female">Femme</option>
-              <option value="other">Autre</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Objectif</label>
-            <textarea
-              name="goal"
-              value={formData.goal}
-              onChange={handleChange}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-            />
-          </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium">Mot de passe</label>
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          />
         </div>
 
         <button
@@ -201,4 +107,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default Account; 

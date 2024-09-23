@@ -114,11 +114,14 @@ app.get('/protected', authenticateJWT, (req, res) => {
 
 app.get('/profile', authenticateJWT, (req, res) => {
   const userId = req.user.id;
-  
-  db.query('SELECT * FROM user_profile WHERE user_id = ?', [userId], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+
+  db.query('SELECT username, email, created_at, updated_at FROM users WHERE id = ?', [userId], (err, results) => {
+    if (err) {
+      console.error('Erreur de base de données:', err); // Ajoute ceci pour voir l'erreur
+      return res.status(500).json({ error: 'Erreur lors de la récupération des données' });
+    }
     if (results.length === 0) return res.status(404).json({ error: 'Profil non trouvé' });
-    
+
     res.json(results[0]);
   });
 });
