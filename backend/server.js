@@ -113,7 +113,7 @@ app.get('/protected', authenticateJWT, (req, res) => {
 });
 
 
-// Route pour créer une nouvelle catégorie
+/// Route pour créer une nouvelle catégorie
 app.post('/category', authenticateJWT, (req, res) => {
   const { name } = req.body;
 
