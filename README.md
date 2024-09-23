@@ -1,159 +1,89 @@
-# Habit Tracker App
+# Projet React et Node.js : Inventory MyDil
 
-Une application de suivi des habitudes développée avec React, Tailwind CSS, Node.js, et MySQL. Cette application permet aux utilisateurs de créer un compte, se connecter, suivre leurs habitudes quotidiennes et se déconnecter. 
+Ce projet est une application web développée avec React pour le frontend et Node.js pour le backend. Il permet de [décrire brièvement la fonctionnalité principale de l'application].
 
-## Table des matières
+## Fonctionnalités
 
-- [Prérequis](#prérequis)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Démarrage](#démarrage)
-- [Utilisation](#utilisation)
-- [Structure du Projet](#structure-du-projet)
-- [Contributions](#contributions)
-- [Licence](#licence)
+- **Frontend (React)** :
+  - Interface utilisateur interactive et réactive
+  - Gestion des états avec [Redux/Context API]
+  - Appels API pour récupérer et envoyer des données
+  - [Autres fonctionnalités spécifiques]
+
+- **Backend (Node.js)** :
+  - API RESTful pour la gestion des données
+  - Authentification des utilisateurs
+  - Gestion de la base de données avec [MongoDB/MySQL/PostgreSQL]
+  - [Autres fonctionnalités spécifiques]
 
 ## Prérequis
 
-Avant de commencer, assurez-vous que vous avez installé les outils suivants :
-
-- [Node.js](https://nodejs.org/)
-- [MySQL](https://www.mysql.com/)
-- [npm ou yarn](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) (gestionnaire de paquets pour Node.js)
+- Node.js >= 14
+- npm (ou yarn)
+- [MongoDB/MySQL/PostgreSQL] (selon le choix de la base de données)
 
 ## Installation
 
-### Backend
+### 1. Cloner le dépôt
 
-1. Clonez le dépôt du backend :
+```bash
+git clone https://github.com/ton-repo/nom-du-projet.git
+cd nom-du-projet
+```
 
-   ```bash
-   git clone https://github.com/votre-utilisateur/habit-tracker-app.git
-   cd habit-tracker-app/backend
-   ```
+### 2. Installer les dépendances
 
-2. Installez les dépendances :
+- **Backend** :
+  Accédez au dossier du backend et installez les dépendances :
+  ```bash
+  cd backend
+  npm install
+  ```
 
-   ```bash
-   npm install
-   ```
+- **Frontend** :
+  Accédez au dossier du frontend et installez les dépendances :
+  ```bash
+  cd ../frontend
+  npm install
+  ```
 
-3. Créez un fichier `.env` à la racine du dossier `backend` et ajoutez les variables d'environnement :
+### 3. Configuration de la base de données
 
-   ```plaintext
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=votre-utilisateur
-   DB_PASSWORD=votre-mot-de-passe
-   DB_NAME=habit_tracker_db
-   JWT_SECRET=votre-secret-jwt
-   PORT=5001
-   ```
+Modifiez le fichier de configuration pour ajouter les détails de connexion à votre base de données (par exemple, dans `backend/.env` ou `backend/config.js`).
 
-4. Démarrez le serveur backend :
+### 4. Lancer les serveurs
 
-   ```bash
-   node server.js
-   ```
+- **Backend** :
+  Depuis le dossier `backend`, lancez le serveur :
+  ```bash
+  npm start
+  ```
 
-### Frontend
+- **Frontend** :
+  Dans le dossier `frontend`, lancez l'application React :
+  ```bash
+  npm start
+  ```
 
-1. Clonez le dépôt du frontend :
+### 5. Accéder à l'application
 
-   ```bash
-   git clone https://github.com/votre-utilisateur/habit-tracker-app.git
-   cd habit-tracker-app/frontend
-   ```
-
-2. Installez les dépendances :
-
-   ```bash
-   npm install
-   ```
-
-3. Démarrez le serveur de développement :
-
-   ```bash
-   npm start
-   ```
-
-## Configuration
-
-1. Assurez-vous que MySQL est en cours d'exécution et créez une base de données appelée `habit_tracker_db`.
-
-2. Exécutez les migrations SQL pour créer les tables nécessaires. Vous pouvez ajouter un script SQL dans le répertoire `backend` pour configurer les tables nécessaires à l'application.
-
-   Exemple de script SQL :
-
-   ```sql
-   CREATE TABLE users (
-     id INT AUTO_INCREMENT PRIMARY KEY,
-     username VARCHAR(255) NOT NULL UNIQUE,
-     password VARCHAR(255) NOT NULL
-   );
-   ```
-
-## Démarrage
-
-Pour démarrer l'application, lancez le serveur backend et le serveur de développement frontend. Assurez-vous que le backend écoute sur le port 5001 et que le frontend écoute sur le port 3000.
-
-- **Backend** : `http://localhost:5001`
-- **Frontend** : `http://localhost:3000`
-
-## Utilisation
-
-1. Accédez à l'application via `http://localhost:3000` dans votre navigateur.
-
-2. Créez un compte ou connectez-vous avec un compte existant.
-
-3. Utilisez l'application pour suivre vos habitudes.
+Rendez-vous à l'adresse suivante dans votre navigateur :
+```
+http://localhost:3000
+```
 
 ## Structure du Projet
 
-Voici un aperçu de la structure du projet :
+- `frontend/` : Contient le code source de l'application React.
+- `backend/` : Contient le code source de l'API Node.js.
+- `README.md` : Documentation du projet.
 
-```
-habit-tracker-app/
-├── backend/
-│   ├── node_modules/
-│   ├── server.js
-│   ├── package.json
-│   ├── .env
-│   ├── ...
-├── frontend/
-│   ├── node_modules/
-│   ├── src/
-│   ├── public/
-│   ├── package.json
-│   ├── tailwind.config.js
-│   ├── ...
-├── README.md
-└── ...
-```
+## Contribuer
 
-- **`backend/`** : Contient le code du serveur Node.js, y compris les routes API et la connexion à la base de données.
-- **`frontend/`** : Contient le code du frontend React, y compris les composants, les pages et les styles avec Tailwind CSS.
+Les contributions sont les bienvenues ! Veuillez suivre ces étapes :
 
-## Contributions
-
-Les contributions sont les bienvenues ! Veuillez soumettre un pull request avec des améliorations ou des corrections. Assurez-vous de suivre les directives de contribution et d'écrire des tests pour vos modifications.
-
-## Licence
-
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](./LICENSE) pour plus d'informations.
-
-
-### Explications
-
-- **Table des matières** : Permet de naviguer facilement dans le README.
-- **Prérequis** : Liste les outils nécessaires pour faire fonctionner le projet.
-- **Installation** : Détaille les étapes pour installer les dépendances pour le backend et le frontend.
-- **Configuration** : Explique comment configurer la base de données et les variables d'environnement.
-- **Démarrage** : Instructions pour démarrer le serveur backend et le frontend.
-- **Utilisation** : Décrit comment utiliser l'application.
-- **Structure du Projet** : Donne un aperçu de la structure du répertoire du projet.
-- **Contributions** : Invite les contributions et décrit comment les soumettre.
-- **Licence** : Spécifie la licence sous laquelle le projet est distribué.
-
-## Auteurs
-[DELAUNAY Mathéo | Seonay](https://www.linkedin.com/in/matheo-delaunay/)
+1. Fork le dépôt.
+2. Crée une nouvelle branche (`git checkout -b feature/ma-fonctionnalite`).
+3. Commit vos modifications (`git commit -m 'Ajouter une nouvelle fonctionnalité'`).
+4. Push sur la branche (`git push origin feature/ma-fonctionnalite`).
+5. Créez une Pull Request.
