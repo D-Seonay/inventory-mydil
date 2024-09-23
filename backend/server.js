@@ -112,7 +112,7 @@ app.get('/protected', authenticateJWT, (req, res) => {
   res.json({ message: 'This is a protected route' });
 });
 
-
+//Catégorie
 /// Route pour créer une nouvelle catégorie
 app.post('/category', authenticateJWT, (req, res) => {
   const { name } = req.body;
@@ -164,64 +164,59 @@ app.delete('/category/:id', authenticateJWT, (req, res) => {
   });
 });
 
-// Route pour créer un nouveau matériel
+// Route pour créer un nouvel équipement
 app.post('/equipment', authenticateJWT, (req, res) => {
   const { name, category_id, stock_quantity, available_quantity, description } = req.body;
 
-  db.query(
-    'INSERT INTO equipment (name, category_id, stock_quantity, available_quantity, description) VALUES (?, ?, ?, ?, ?)',
-    [name, category_id, stock_quantity, available_quantity, description],
-    (err, result) => {
-      if (err) {
-        console.error('Erreur lors de la création du matériel:', err);
-        return res.status(500).json({ error: 'Erreur lors de la création du matériel' });
-      }
-      res.status(201).json({ message: 'Matériel créé avec succès', equipmentId: result.insertId });
+  db.query('INSERT INTO equipment (name, category_id, stock_quantity, available_quantity, description) VALUES (?, ?, ?, ?, ?)', 
+  [name, category_id, stock_quantity, available_quantity, description], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la création de l\'équipement:', err);
+      return res.status(500).json({ error: 'Erreur lors de la création de l\'équipement' });
     }
-  );
+    res.status(201).json({ message: 'Équipement créé avec succès', equipmentId: result.insertId });
+  });
 });
 
-// Route pour récupérer tout le matériel
+// Route pour récupérer tous les équipements
 app.get('/equipment', authenticateJWT, (req, res) => {
   db.query('SELECT * FROM equipment', (err, results) => {
     if (err) {
-      console.error('Erreur lors de la récupération du matériel:', err);
-      return res.status(500).json({ error: 'Erreur lors de la récupération du matériel' });
+      console.error('Erreur lors de la récupération des équipements:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération des équipements' });
     }
     res.json(results);
   });
 });
 
-// Route pour mettre à jour un matériel
+// Route pour mettre à jour un équipement
 app.put('/equipment/:id', authenticateJWT, (req, res) => {
   const { id } = req.params;
   const { name, category_id, stock_quantity, available_quantity, description } = req.body;
 
-  db.query(
-    'UPDATE equipment SET name = ?, category_id = ?, stock_quantity = ?, available_quantity = ?, description = ? WHERE id = ?',
-    [name, category_id, stock_quantity, available_quantity, description, id],
-    (err, result) => {
-      if (err) {
-        console.error('Erreur lors de la mise à jour du matériel:', err);
-        return res.status(500).json({ error: 'Erreur lors de la mise à jour du matériel' });
-      }
-      res.json({ message: 'Matériel mis à jour avec succès' });
+  db.query('UPDATE equipment SET name = ?, category_id = ?, stock_quantity = ?, available_quantity = ?, description = ? WHERE id = ?', 
+  [name, category_id, stock_quantity, available_quantity, description, id], (err, result) => {
+    if (err) {
+      console.error('Erreur lors de la mise à jour de l\'équipement:', err);
+      return res.status(500).json({ error: 'Erreur lors de la mise à jour de l\'équipement' });
     }
-  );
+    res.json({ message: 'Équipement mis à jour avec succès' });
+  });
 });
 
-// Route pour supprimer un matériel
+// Route pour supprimer un équipement
 app.delete('/equipment/:id', authenticateJWT, (req, res) => {
   const { id } = req.params;
 
   db.query('DELETE FROM equipment WHERE id = ?', [id], (err, result) => {
     if (err) {
-      console.error('Erreur lors de la suppression du matériel:', err);
-      return res.status(500).json({ error: 'Erreur lors de la suppression du matériel' });
+      console.error('Erreur lors de la suppression de l\'équipement:', err);
+      return res.status(500).json({ error: 'Erreur lors de la suppression de l\'équipement' });
     }
-    res.json({ message: 'Matériel supprimé avec succès' });
+    res.json({ message: 'Équipement supprimé avec succès' });
   });
 });
+
 
 // Route pour créer une nouvelle réservation
 app.post('/reservation', authenticateJWT, (req, res) => {

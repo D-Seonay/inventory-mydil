@@ -18,6 +18,7 @@ const Navbar = () => {
           <Link to="/protected" className="ml-4">Page Protégée</Link>
           {isLoggedIn && <Link to="/account" className="ml-4">Mon Compte</Link>}
           <Link to="/category" className="ml-4">Catégories</Link>
+          <Link to="/material" className="ml-4">Matériels</Link>
         </div>
         <div>
           {isLoggedIn ? (
