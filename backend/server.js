@@ -75,19 +75,6 @@ app.post('/register', (req, res) => {
             console.error('Erreur lors de l\'inscription de l\'utilisateur:', err);
             return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
           }
-
-          // Insérer les informations dans la table du profil utilisateur
-          db.query(
-            'INSERT INTO user_profile (user_id, first_name, last_name, age, weight, height, gender, goal) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [result.insertId, firstName, lastName, age, weight, height, gender, goal],
-            (err) => {
-              if (err) {
-                console.error('Erreur lors de l\'inscription du profil utilisateur:', err);
-                return res.status(500).json({ error: 'Erreur lors de l\'inscription' });
-              }
-              res.status(201).json({ message: 'Inscription réussie' });
-            }
-          );
         }
       );
     });
