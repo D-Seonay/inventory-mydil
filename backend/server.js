@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const mysql = require('mysql2');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -6,6 +8,29 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express(); // Initialisation de l'application Express
+
+// Configuration de multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/images');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // Nom unique pour chaque fichier
+  }
+});
+
+const upload = multer({ storage });
+
+// Route pour uploader une image
+app.post('/upload', upload.single('photo'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('Aucune image n\'a été téléchargée.');
+  }
+  res.send({ filePath: `/uploads/images/${req.file.filename}` });
+});
+
+// Assurez-vous que les fichiers du dossier 'uploads' soient accessibles
+app.use('/uploads', express.static('uploads'));
 
 // Middleware pour CORS
 app.use(cors());

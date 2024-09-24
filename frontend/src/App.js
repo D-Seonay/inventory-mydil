@@ -8,6 +8,7 @@ import ProtectedPage from './pages/auth/ProtectedPage';
 import Account from './pages/Account';  // Ajout de la page de compte
 import CategoryPage from './pages/CategoryPage';  // Ajout de la page de catégories
 import MaterialPage from './pages/MaterialPage';  // Ajout de la page de matériels
+import Admin from './pages/Admin';
 
 const App = () => {
   const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token');
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/protected" element={<ProtectedPage />} />
         <Route path="/category" element={<CategoryPage />} />  {/* Ajout de la route pour la page de catégories */}
         <Route path="/material" element={<MaterialPage />} />  {/* Ajout de la route pour la page de matériels */}
+        <Route path="/admin" element={<Admin />} />
 
         {/* Page de compte accessible seulement si connecté */}
         <Route path="/account" element={isAuthenticated ? <Account /> : <Login />} />
