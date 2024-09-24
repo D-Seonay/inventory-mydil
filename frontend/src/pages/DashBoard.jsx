@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'
 import Cards from '../components/Cards'
 
 const DashBoard = () => {
     const location = useLocation();
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     const cardsData = [
         {
@@ -25,6 +27,12 @@ const DashBoard = () => {
             tags: ['photography', 'travel', 'fall'],
           },
     ];
+
+    const filteredCards = cardsData.filter((card) =>
+        card.title.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtre par titre
+        card.description.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtre par description
+        card.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) // Filtre par tags
+      );
 
     const isActive = (path) => location.pathname === path;
 
@@ -130,6 +138,8 @@ const DashBoard = () => {
                 type="text"
                 placeholder="Search..."
                 className="bg-gray-200 rounded-full p-2 pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
             <i class="fa-solid fa-moon"></i>
@@ -172,7 +182,9 @@ const DashBoard = () => {
 
         {/* Cards */}
 
+
         <Cards />
+
         
 
         </div>

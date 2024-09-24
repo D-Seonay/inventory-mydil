@@ -12,6 +12,7 @@ import DashBoard from './pages/DashBoard';
 import Card from './components/Card';
 
 import MaterialPage from './pages/MaterialPage';  // Ajout de la page de matériels
+import Admin from './pages/Admin';
 
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/DashBoard" element={<DashBoard />} />
 
         <Route path="/material" element={<MaterialPage />} />  {/* Ajout de la route pour la page de matériels */}
+        <Route path="/admin" element={<Admin />} />
 
 
         {/* Page de compte accessible seulement si connecté */}
