@@ -10,7 +10,7 @@ const Register = () => {
     email: '',
     password: '',
     promotion: '',
-    role: '',
+    role: 'user',
   });
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -110,17 +110,6 @@ const Register = () => {
             <option value="I1">I1</option>
             <option value="I2">I2</option>
           </select>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium">Rôle</label>
-          <input
-            type="text"
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="mt-1 block w-full p-3 border border-gray-300 rounded-md"
-            required
-          />
         </div>
         <button
           type="submit"

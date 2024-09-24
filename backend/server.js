@@ -47,7 +47,7 @@ const authenticateJWT = (req, res, next) => {
 
 // Route pour l'inscription d'un utilisateur
 app.post('/register', (req, res) => {
-  const { firstName, lastName, username, password, email, promotion, role } = req.body;
+  const { firstName, lastName, username, password, email, promotion } = req.body;
 
   // Vérifier si le pseudo existe déjà
   db.query('SELECT * FROM user WHERE username = ?', [username], (err, results) => {
@@ -69,7 +69,7 @@ app.post('/register', (req, res) => {
       // Insérer les informations dans la table des utilisateurs
       db.query(
         'INSERT INTO user (first_name, last_name, username, password, email, promotion, role) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [firstName, lastName, username, hashedPassword, email, promotion, role],
+        [firstName, lastName, username, hashedPassword, email, promotion, 'user'],
         (err, result) => {
           if (err) {
             console.error('Erreur lors de l\'inscription de l\'utilisateur:', err);
