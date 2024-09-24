@@ -4,6 +4,7 @@ import { useUser } from '../context/UserContext';
 
 const Home = () => {
     return (
+
         <body class='bg-home-page'>    
         <section class='inset-0 bg-black/30 backdrop-blur-md'>
         
@@ -44,8 +45,6 @@ const Home = () => {
                 
             </div>
         
-
-            </div>
         </div>
 
         </section>

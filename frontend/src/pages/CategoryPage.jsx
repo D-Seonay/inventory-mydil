@@ -13,8 +13,13 @@ const CategoryPage = () => {
   }, []);
 
   const fetchCategories = async () => {
+    const token = localStorage.getItem('token'); // Récupérer le token
     try {
-      const response = await axios.get('http://localhost:5001/category');
+      const response = await axios.get('http://localhost:5001/category', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajouter le token
+        },
+      });
       setCategories(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des catégories:', error);
@@ -23,8 +28,17 @@ const CategoryPage = () => {
 
   // Ajouter une nouvelle catégorie
   const handleAddCategory = async () => {
+    const token = localStorage.getItem('token'); // Récupérer le token
     try {
-      await axios.post('http://localhost:5001/category', { name: newCategory });
+      await axios.post(
+        'http://localhost:5001/category',
+        { name: newCategory },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajouter le token
+          },
+        }
+      );
       setNewCategory('');
       fetchCategories(); // Rafraîchir la liste après ajout
     } catch (error) {
@@ -34,8 +48,17 @@ const CategoryPage = () => {
 
   // Modifier une catégorie
   const handleEditCategory = async (id) => {
+    const token = localStorage.getItem('token'); // Récupérer le token
     try {
-      await axios.put(`http://localhost:5001/category/${id}`, { name: editCategoryName });
+      await axios.put(
+        `http://localhost:5001/category/${id}`,
+        { name: editCategoryName },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Ajouter le token
+          },
+        }
+      );
       setEditCategoryId(null); // Sortir du mode d'édition
       setEditCategoryName('');
       fetchCategories(); // Rafraîchir la liste après modification
@@ -46,8 +69,13 @@ const CategoryPage = () => {
 
   // Supprimer une catégorie
   const handleDeleteCategory = async (id) => {
+    const token = localStorage.getItem('token'); // Récupérer le token
     try {
-      await axios.delete(`http://localhost:5001/category/${id}`);
+      await axios.delete(`http://localhost:5001/category/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Ajouter le token
+        },
+      });
       fetchCategories(); // Rafraîchir la liste après suppression
     } catch (error) {
       console.error('Erreur lors de la suppression de la catégorie:', error);
@@ -79,12 +107,12 @@ const CategoryPage = () => {
               </>
             ) : (
               <>
-                <span>{category.nom}</span>
+                <span>{category.name}</span>
                 <div>
                   <button
                     onClick={() => {
                       setEditCategoryId(category.id);
-                      setEditCategoryName(category.nom);
+                      setEditCategoryName(category.name);
                     }}
                     className="mr-4 p-2 bg-yellow-500 text-white rounded"
                   >
