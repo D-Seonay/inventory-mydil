@@ -8,7 +8,7 @@ module.exports = {
 
       backgroundImage: {
         'home-page': "url('\mydil.jpg')",
-      }
+      },
 
       colors: {
         primary: '#3490dc',

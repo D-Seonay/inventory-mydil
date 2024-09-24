@@ -46,10 +46,12 @@ const Home = () => {
             </div>
         
         </div>
+        </div>
 
         </section>
 
         </body>
+
 
     );
 };
