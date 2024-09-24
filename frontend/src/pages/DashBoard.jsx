@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom'
 import Card from '../components/Card'
 
 const DashBoard = () => {
     const location = useLocation();
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     const cardsData = [
         {
@@ -25,6 +27,12 @@ const DashBoard = () => {
             tags: ['photography', 'travel', 'fall'],
           },
     ];
+
+    const filteredCards = cardsData.filter((card) =>
+        card.title.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtre par titre
+        card.description.toLowerCase().includes(searchTerm.toLowerCase()) || // Filtre par description
+        card.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase())) // Filtre par tags
+      );
 
     const isActive = (path) => location.pathname === path;
 
@@ -130,6 +138,8 @@ const DashBoard = () => {
                 type="text"
                 placeholder="Search..."
                 className="bg-gray-200 rounded-full p-2 pl-10"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 />
             </div>
             <i class="fa-solid fa-moon"></i>
@@ -172,8 +182,10 @@ const DashBoard = () => {
 
         {/* Cards */}
 
+        {/* Affichage des cartes filtrées */}
         <div className="w-full h-5/6 p-10 pr-0 pl-0 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-            {cardsData.map((card, index) => (
+            {filteredCards.length > 0 ? (
+            filteredCards.map((card, index) => (
                 <Card
                 key={index}
                 imageSrc={card.imageSrc}
@@ -181,7 +193,10 @@ const DashBoard = () => {
                 description={card.description}
                 tags={card.tags}
                 />
-            ))}
+            ))
+            ) : (
+            <p>No results found.</p> // Message si aucun résultat n'est trouvé
+            )}
         </div>
         
 
