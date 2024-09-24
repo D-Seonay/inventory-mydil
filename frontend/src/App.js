@@ -7,15 +7,20 @@ import Logout from './pages/auth/Logout';
 import ProtectedPage from './pages/auth/ProtectedPage';
 import Account from './pages/Account';  // Ajout de la page de compte
 import CategoryPage from './pages/CategoryPage';  // Ajout de la page de catégories
+
+import DashBoard from './pages/DashBoard';
+import Card from './components/Card';
+
 import MaterialPage from './pages/MaterialPage';  // Ajout de la page de matériels
 import Admin from './pages/Admin';
+
 
 const App = () => {
   const isAuthenticated = localStorage.getItem('token') || sessionStorage.getItem('token');
 
   return (
     <Router>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
         <Route path="/register" element={<Register />} />
@@ -23,8 +28,12 @@ const App = () => {
         <Route path="/logout" element={<Logout />} />
         <Route path="/protected" element={<ProtectedPage />} />
         <Route path="/category" element={<CategoryPage />} />  {/* Ajout de la route pour la page de catégories */}
+
+        <Route path="/DashBoard" element={<DashBoard />} />
+
         <Route path="/material" element={<MaterialPage />} />  {/* Ajout de la route pour la page de matériels */}
         <Route path="/admin" element={<Admin />} />
+
 
         {/* Page de compte accessible seulement si connecté */}
         <Route path="/account" element={isAuthenticated ? <Account /> : <Login />} />

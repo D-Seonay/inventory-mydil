@@ -5,6 +5,11 @@ module.exports = {
   ],
   theme: {
     extend: {
+
+      backgroundImage: {
+        'home-page': "url('\mydil.jpg')",
+      },
+
       colors: {
         primary: '#3490dc',
         secondary: '#ffed4a',
@@ -16,6 +21,7 @@ module.exports = {
         'lg': '1024px',
         'xl': '1280px',
       },
+
     },
   },
   plugins: [],
