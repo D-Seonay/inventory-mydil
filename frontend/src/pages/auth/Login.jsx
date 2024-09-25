@@ -26,7 +26,7 @@ const Login = () => {
         sessionStorage.setItem('username', username);
       }
 
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Erreur lors de la connexion');
     }
