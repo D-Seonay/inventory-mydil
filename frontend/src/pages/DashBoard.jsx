@@ -90,17 +90,7 @@ const DashBoard = () => {
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-semibold">Main Dashboard</h1>
                     <div className="flex items-center space-x-4 bg-white p-2 rounded-full shadow-lg">
-                        <div className="relative">
-                            <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2"></i>
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                className="bg-gray-200 rounded-full p-2 pl-10"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
-                        </div>
-                        <i className="fa-solid fa-moon"></i>
+                        <i className="fa-solid fa-moon ml-3"></i>
                         <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
                     </div>
                 </div>
