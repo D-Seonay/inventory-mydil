@@ -6,6 +6,7 @@ const Cards = () => {
   const [equipments, setEquipments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(''); // État pour le terme de recherche
 
   useEffect(() => {
     const fetchEquipments = async () => {
@@ -28,6 +29,12 @@ const Cards = () => {
     fetchEquipments();
   }, []);
 
+  const filteredEquipments = equipments.filter((equipment) =>
+    (equipment.name && equipment.name.toLowerCase().includes(searchTerm.toLowerCase())) || // Filtre par nom
+    (equipment.description && equipment.description.toLowerCase().includes(searchTerm.toLowerCase())) || // Filtre par description
+    (equipment.tags && equipment.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))) // Filtre par tags
+);
+
   if (loading) {
     return <div className="text-center">Chargement...</div>;
   }
@@ -43,9 +50,17 @@ const Cards = () => {
 
   return (
     <div className="container mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Liste des Équipements</h1>
+        <div className="flex justify-center my-8">
+            <input
+            type="text"
+            placeholder="Rechercher un équipement..."
+            className="w-full p-2 border border-gray-300 rounded-full shadow-sm"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            />
+        </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {equipments.map((equipment) => (
+        {filteredEquipments.map((equipment) => (
           <Card 
             key={equipment.id}
             photo={equipment.photo} 
