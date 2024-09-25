@@ -8,7 +8,8 @@ const DashBoard = () => {
 
     const [equipments, setEquipments] = useState([]); // État pour stocker les équipements
     const [searchTerm, setSearchTerm] = useState('');
-
+    const [darkMode, setDarkMode] = useState(false); // État pour le mode sombre
+  
     useEffect(() => {
         const fetchEquipments = async () => {
             try {
@@ -28,6 +29,11 @@ const DashBoard = () => {
 
 
     const isActive = (path) => location.pathname === path;
+
+    // Fonction pour basculer le mode sombre
+    const toggleDarkMode = () => {
+        setDarkMode(!darkMode);
+    }
 
     return (
         <div className="flex min-h-screen bg-gray-100 ">
@@ -132,4 +138,6 @@ const DashBoard = () => {
     );
 };
 
+
 export default DashBoard;
+

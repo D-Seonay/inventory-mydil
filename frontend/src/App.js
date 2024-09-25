@@ -7,6 +7,7 @@ import Logout from './pages/auth/Logout';
 import ProtectedPage from './pages/auth/ProtectedPage';
 import Account from './pages/Account';  // Ajout de la page de compte
 import CategoryPage from './pages/CategoryPage';  // Ajout de la page de catégories
+import Admin from './pages/Admin';
 
 import DashBoard from './pages/DashBoard';
 import Card from './components/Card';
@@ -33,6 +34,8 @@ const App = () => {
 
         <Route path="/material" element={<MaterialPage />} />  {/* Ajout de la route pour la page de matériels */}
         <Route path="/admin" element={<Admin />} />
+
+        <Route path="/Admin" element={<Admin />} /> 
 
 
         {/* Page de compte accessible seulement si connecté */}
