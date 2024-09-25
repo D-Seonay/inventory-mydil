@@ -1,11 +1,11 @@
 const express = require('express');
+const equipmentController = require('../controllers/equipmentController');
 const router = express.Router();
-const equipmentController = require('../controllers/equipmentController'); // Assurez-vous que le chemin est correct
 
-// Définissez vos routes ici
-router.post('/', equipmentController.createEquipment); // Assurez-vous que createEquipment est défini
-router.get('/', equipmentController.getEquipments);
-router.put('/:id', equipmentController.updateEquipment);
-router.delete('/:id', equipmentController.deleteEquipment);
+// Routes pour les équipements
+router.post('/equipment', equipmentController.createEquipment);
+router.get('/equipment', equipmentController.getEquipments);
+router.put('/equipment/:id', equipmentController.updateEquipment);
+router.delete('/equipment/:id', equipmentController.deleteEquipment);
 
 module.exports = router;

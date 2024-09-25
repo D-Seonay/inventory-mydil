@@ -7,8 +7,8 @@ module.exports = {
     extend: {
 
       backgroundImage: {
-        'home-page': "url('\mydil.jpg')",
-      }
+        'home-page': "url('\mydil.png')",
+      },
 
       colors: {
         primary: '#3490dc',
