@@ -10,10 +10,8 @@ import CategoryPage from './pages/CategoryPage';  // Ajout de la page de catégo
 import Admin from './pages/Admin';
 
 import DashBoard from './pages/DashBoard';
-import Card from './components/Card';
 
 import MaterialPage from './pages/MaterialPage';  // Ajout de la page de matériels
-import Admin from './pages/Admin';
 
 
 const App = () => {
