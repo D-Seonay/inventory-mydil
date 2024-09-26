@@ -53,15 +53,7 @@ const DashBoard = () => {
                                 {isActive('/DashBoard') && <span className='bg-[#3948FF] w-1 h-7 ml-auto rounded-md'></span>}
                             </Link>
                         </li>
-                        <li className="mb-4">
-                            <Link to="/Material" className={`flex items-center p-2 text-lg font-medium group ${isActive('/Material') ? '' : 'text-gray-700'}`}>
-                                <span>
-                                    <i className={`fa-solid fa-toolbox w-8 group-hover:text-[#3948FF] ${isActive('/Material') ? 'text-[#3948FF]' : ''}`}></i>
-                                    Matériel
-                                </span>
-                                {isActive('/Material') && <span className='bg-[#3948FF] w-1 h-7 ml-auto rounded-md'></span>}
-                            </Link>
-                        </li>
+                        
                         <li className="mb-4">
                             <Link to="/Profile" className={`flex items-center p-2 text-lg font-medium group ${isActive('/Profile') ? '' : 'text-gray-700'}`}>
                                 <span>
@@ -90,8 +82,18 @@ const DashBoard = () => {
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-3xl font-semibold">Main Dashboard</h1>
                     <div className="flex items-center space-x-4 bg-white p-2 rounded-full shadow-lg">
-                        <i className="fa-solid fa-moon ml-3"></i>
-                        <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
+                        
+                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center" onClick={toggleDarkMode}>
+                            <i className={`fa-solid fa-moon ${darkMode ? 'text-yellow-400' : 'text-gray-500'}`}></i>
+                        </div>
+                        <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <button className=" text-white px-4 py-2" onClick={() => {
+                                localStorage.removeItem('token');
+                                window.location.href = '/logout';
+                            }}>
+                                <i className="fa-solid fa-sign-out-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -115,8 +117,6 @@ const DashBoard = () => {
                         </div>
                         <span className='bg-gray-300 w-px h-full rounded-full'></span>
                         <div className='w-1/5'>
-                            <h3 className="text-lg font-semibold">Earnings</h3>
-                            <p className="text-2xl font-bold">$340.50</p>
                         </div>
                     </div>
                 </div>
