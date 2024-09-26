@@ -3,12 +3,17 @@ import axios from 'axios';
 
 const TableComponent = () => {
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchReservations = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await axios.get('/api/reservations', {
+                if (!token) {
+                    console.error('Token manquant');
+                  }
+                const response = await axios.get('http://localhost:5001/reservation', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -18,8 +23,11 @@ const TableComponent = () => {
                 console.log('Réponse des réservations:', response.data);
                 
                 setData(response.data);
+                setLoading(false);
             } catch (error) {
-                console.error('Erreur lors de la récupération des réservations', error);
+                console.error('Erreur lors de la récupération des réservations:', error);
+                setError('Erreur lors de la récupération des réservations.');
+                setLoading(false);
             }
         };
     
@@ -30,7 +38,7 @@ const TableComponent = () => {
     const handleAccept = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`/api/reservation/${id}`, { status: 'Accepted' }, {
+            await axios.put(`http://localhost:5001/reservation/${id}`, { status: 'Accepted' }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -44,7 +52,7 @@ const TableComponent = () => {
     const handleDeny = async (id) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`/api/reservation/${id}`, { status: 'Denied' }, {
+            await axios.put(`http://localhost:5001/reservation/${id}`, { status: 'Denied' }, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -54,6 +62,16 @@ const TableComponent = () => {
             console.error('Erreur lors de la mise à jour de la réservation', error);
         }
     };
+
+    // Affichage pendant le chargement
+    if (loading) {
+        return <div>Chargement des réservations...</div>;
+    }
+
+    // Affichage en cas d'erreur
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className='overflow-auto h-[70vh] mt-10'>

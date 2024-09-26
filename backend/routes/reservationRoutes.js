@@ -10,7 +10,7 @@ const authenticateJWT = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 router.post('/reservation', authenticateJWT, createReservation);
-router.get('/reservations', authenticateJWT, getReservations);
+router.get('/reservation', authenticateJWT, getReservations);
 router.put('/reservation/:id', authenticateJWT, updateReservation);
 router.delete('/reservation/:id', authenticateJWT, deleteReservation);
 

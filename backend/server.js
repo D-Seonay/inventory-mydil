@@ -10,11 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api', authRoutes);
-app.use('/api', categoryRoutes);
-app.use('/api', equipmentRoutes);
-app.use('/api', profileRoutes);
-app.use('/api', reservationRoutes);
+app.use(authRoutes);
+app.use(categoryRoutes);
+app.use(equipmentRoutes);
+app.use(profileRoutes);
+app.use(reservationRoutes);
 
 app.use('/uploads/images', express.static('uploads'));
 
