@@ -71,7 +71,6 @@ const Cards = () => {
             available_quantity={equipment.available_quantity}
             location={equipment.location}
             purchase_date={equipment.purchase_date}
-            reference={equipment.reference}
           />
         ))}
       </div>

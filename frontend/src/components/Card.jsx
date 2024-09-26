@@ -12,7 +12,6 @@ const Card = ({
   description, 
   location, 
   purchase_date, 
-  reference, 
   photo 
 }) => {
 
@@ -63,7 +62,6 @@ const Card = ({
           <p className="text-gray-600 text-sm">Quantité disponible: {available_quantity}</p>
           <p className="text-gray-600 text-sm">Emplacement: {location}</p>
           <p className="text-gray-600 text-sm">Date d'achat: {new Date(purchase_date).toLocaleDateString()}</p>
-          <p className="text-gray-600 text-sm">Référence: {reference}</p> 
         </div>
         <Modal/>
       </div>
