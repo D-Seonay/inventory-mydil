@@ -12,7 +12,7 @@ const TableComponent = () => {
                 const token = localStorage.getItem('token');
                 if (!token) {
                     console.error('Token manquant');
-                  }
+                }
                 const response = await axios.get('http://localhost:5001/reservation', {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -79,7 +79,6 @@ const TableComponent = () => {
                 <thead className="bg-gray-200 text-gray-700">
                 <tr>
                     <th className="px-4 py-2">ID</th>
-                    <th className="px-4 py-2">Objet</th>
                     <th className="px-4 py-2">Email</th>
                     <th className="px-4 py-2">Date de début</th>
                     <th className="px-4 py-2">Date de fin</th>
@@ -92,7 +91,6 @@ const TableComponent = () => {
                     data.map((item) => (
                         <tr key={item.id} className="border-b">
                             <td className="px-4 py-2 text-center">{item.id}</td>
-                            <td className="px-4 py-2 text-center">{item.object}</td>
                             <td className="px-4 py-2 text-center">{item.email}</td>
                             <td className="px-4 py-2 text-center">{new Date(item.start_date).toLocaleDateString()}</td>
                             <td className="px-4 py-2 text-center">{new Date(item.end_date).toLocaleDateString()}</td>
