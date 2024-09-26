@@ -37,4 +37,17 @@ const updateProfile = (req, res) => {
   });
 };
 
-module.exports = { getProfile, updateProfile };
+//Afficher tous les profils
+
+const getAllProfiles = (req, res) => {
+  db.query('SELECT * FROM user', (err, results) => {
+      if (err) {
+      console.error('Erreur lors de la récupération des profils:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération des profils' });
+      }
+      res.json(results);
+  });
+  };
+
+
+module.exports = { getProfile, updateProfile, getAllProfiles };
