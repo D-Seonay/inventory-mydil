@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import axios from 'axios';
+import Modal from './Modal';
 
 const Card = ({ 
   id,
@@ -52,7 +53,7 @@ const Card = ({
           <span className="text-gray-500">Image non disponible</span>
         </div>
       )}
-      <div className='flex'>
+      <div className='flex col-span-2 justify-between items-end'>
       
         <div className="px-6 py-4">
           <div className="font-bold text-xl mb-2">{name}</div>
@@ -64,13 +65,7 @@ const Card = ({
           <p className="text-gray-600 text-sm">Date d'achat: {new Date(purchase_date).toLocaleDateString()}</p>
           <p className="text-gray-600 text-sm">Référence: {reference}</p> 
         </div>
-        <button
-          onClick={handleReservation}  // Appeler directement la fonction
-          className="m-auto mb-10 mr-10 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 h-fit"
-          disabled={isReserved}  // Désactiver le bouton si déjà réservé
-        >
-          {isReserved ? 'Réservé' : 'Réserver'}
-        </button>
+        <Modal/>
       </div>
     </div>
   );
