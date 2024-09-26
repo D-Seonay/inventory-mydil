@@ -62,7 +62,7 @@ const Navbar = ({ darkMode }) => {
                     <i className={`fa-solid fa-user w-8 group-hover:text-[#3948FF] ${
                     isActive('/Profile') ? 'text-[#3948FF]' : ''
                     }`}></i>
-                    Profile
+                    Profil
                 </span>
                 {isActive('/Profile') && (
                     <span className='bg-[#3948FF] w-1 h-7 ml-auto rounded-md'></span>
