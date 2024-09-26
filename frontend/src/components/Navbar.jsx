@@ -36,21 +36,6 @@ const Navbar = ({ darkMode }) => {
             </Link>
             </li>
             <li className="mb-4">
-            <Link 
-            to="/Material" 
-            className={`flex items-center p-2 text-lg font-medium group ${
-                isActive('/Material') ? '' : 'text-gray-700'
-            }`}>
-                <span>
-                    <i className={`fa-solid fa-toolbox w-8 group-hover:text-[#3948FF] ${
-                    isActive('/Material') ? 'text-[#3948FF]' : ''
-                    }`}></i>
-                    Matériel
-                </span>
-                {isActive('/Material') && (
-                    <span className='bg-[#3948FF] w-1 h-7 ml-auto rounded-md'></span>
-                )}
-            </Link>
             </li>
             <li className="mb-4">
             <Link 

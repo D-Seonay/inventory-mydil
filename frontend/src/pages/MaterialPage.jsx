@@ -99,7 +99,7 @@ const EquipmentPage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
+    <div className="max-w-lg mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg overflow-auto h-[70vh] scrollbar-hide">
       <h1 className="text-2xl font-bold mb-6">Gestion des Équipements</h1>
 
       {/* Liste des équipements */}

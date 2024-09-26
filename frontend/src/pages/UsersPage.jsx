@@ -40,7 +40,7 @@ const UsersPage = () => {
   }
 
   return (
-    <div className="container mx-auto my-10">
+    <div className="container mx-auto my-10 overflow-auto h-[70vh] mt-10">
       <h2 className="text-2xl font-bold mb-6">Liste des utilisateurs</h2>
       <table className="table-auto w-full text-left bg-white shadow-md rounded">
         <thead>

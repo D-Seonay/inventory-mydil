@@ -34,7 +34,7 @@ const Register = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
+    <div className="max-w-md mx-auto mt-10 p-8 bg-grey-100 shadow-lg rounded-lg">
       <h1 className="text-2xl font-bold mb-6">Inscription</h1>
       {message && <p className="text-red-500 mb-4">{message}</p>}
 
@@ -117,6 +117,9 @@ const Register = () => {
         >
           S'inscrire
         </button>
+        <p className="text-center mt-4">
+          Vous avez déjà un compte ? <a href="/login" className="text-blue-500">Connectez-vous</a>
+        </p>
       </form>
     </div>
   );

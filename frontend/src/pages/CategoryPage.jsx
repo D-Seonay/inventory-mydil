@@ -83,7 +83,7 @@ const CategoryPage = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg">
+    <div className="max-w-lg mx-auto mt-10 p-8 bg-white shadow-lg rounded-lg overflow-auto h-[70vh] mt-10">
       <h1 className="text-2xl font-bold mb-6">Gestion des Catégories</h1>
 
       {/* Liste des catégories */}

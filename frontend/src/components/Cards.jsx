@@ -49,8 +49,8 @@ const Cards = () => {
   }
 
   return (
-    <div className="container mx-auto relative">
-        <div className="flex justify-center my-8">
+    <div className="container mx-auto relative overflow-auto h-[70vh] mt-10 scrollbar-hide">
+        <div className="flex justify-center my-8 scrollbar-hide">
             <input
             type="text"
             placeholder="Rechercher un équipement..."
