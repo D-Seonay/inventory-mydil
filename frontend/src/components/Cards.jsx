@@ -49,7 +49,7 @@ const Cards = () => {
   }
 
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto relative">
         <div className="flex justify-center my-8">
             <input
             type="text"
