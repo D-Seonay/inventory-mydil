@@ -10,6 +10,7 @@ import Account from './pages/Account';  // Ajout de la page de compte
 import CategoryPage from './pages/CategoryPage';  // Ajout de la page de catégories
 import Admin from './pages/Admin';
 import PrivateRoute from './components/PrivateRoute';
+import Profile from './pages/Profile';
 
 import DashBoard from './pages/DashBoard';
 
@@ -35,15 +36,12 @@ const App = () => {
           <Route path="/logout" element={<Logout />} />
           <Route path="/protected" element={<ProtectedPage />} />
           <Route path="/category" element={<CategoryPage />} />  {/* Ajout de la route pour la page de catégories */}
-
           <Route path="/dashboard" element={<PrivateRoute element={<DashBoard />} />} />
-
           <Route path="/material" element={<MaterialPage />} />  {/* Ajout de la route pour la page de matériels */}
           <Route path="/admin" element={<Admin />} />
-
+          <Route path="/Profile" element={<Profile />} />
           {/* Page de compte accessible seulement si connecté */}
           <Route path="/account" element={isAuthenticated ? <Account /> : <Login />} />
-
           {/* Rediriger toutes les autres pages vers login si non connecté */}
           <Route path="*" element={<Login />} />
         </Routes>
