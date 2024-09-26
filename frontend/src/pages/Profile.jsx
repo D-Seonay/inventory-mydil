@@ -24,7 +24,7 @@ const Profile = () => {
                 throw new Error("Token ou userId manquant");
             }
 
-            const response = await fetch(`http://localhost:5001/userReservations?userId=${userId}`, {
+            const response = await fetch(`http://localhost:5001/userReservations/:?userId=${userId}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

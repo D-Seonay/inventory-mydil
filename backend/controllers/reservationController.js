@@ -43,9 +43,8 @@ const getUserReservations = (req, res) => {
   const { userId } = req.query; // Récupérer l'ID de l'utilisateur à partir des paramètres de la requête
 
   const query = `
-    SELECT reservation.id, equipment.name AS equipment_name, reservation.start_date, reservation.end_date, reservation.status
+    SELECT *
     FROM reservation
-    JOIN equipment ON reservation.equipment_id = equipment.id
     WHERE reservation.user_id = ?
   `;
 
