@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Card = ({ 
+  id,
   name, 
   category_id, 
   stock_quantity, 
@@ -11,6 +14,35 @@ const Card = ({
   reference, 
   photo 
 }) => {
+
+  const [isReserved, setIsReserved] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
+  const handleReservation = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Assurez-vous que l'utilisateur est authentifié
+      const userId = localStorage.getItem('userId'); // Obtenir l'ID utilisateur
+
+      await axios.post('http://localhost:5001/reservations', {
+        user_id: userId,
+        equipment_id: id,
+        start_date: startDate,
+        end_date: endDate,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      alert('Équipement réservé avec succès');
+      setIsReserved(true); // Marquer comme réservé
+    } catch (error) {
+      console.error('Erreur lors de la réservation:', error);
+      alert('Erreur lors de la réservation de l\'équipement');
+    }
+  };
+
   return (
     <div className="rounded-xl overflow-hidden shadow-lg h-fit transition-transform transform hover:scale-105">
       {photo ? (
@@ -20,15 +52,25 @@ const Card = ({
           <span className="text-gray-500">Image non disponible</span>
         </div>
       )}
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{name}</div>
-        <p className="text-gray-700 text-base">{description}</p>
-        <p className="text-gray-600 text-sm">Catégorie ID: {category_id}</p>
-        <p className="text-gray-600 text-sm">Quantité en stock: {stock_quantity}</p>
-        <p className="text-gray-600 text-sm">Quantité disponible: {available_quantity}</p>
-        <p className="text-gray-600 text-sm">Emplacement: {location}</p>
-        <p className="text-gray-600 text-sm">Date d'achat: {new Date(purchase_date).toLocaleDateString()}</p>
-        <p className="text-gray-600 text-sm">Référence: {reference}</p>
+      <div className='flex'>
+      
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{name}</div>
+          <p className="text-gray-700 text-base">{description}</p>
+          <p className="text-gray-600 text-sm">Catégorie ID: {category_id}</p>
+          <p className="text-gray-600 text-sm">Quantité en stock: {stock_quantity}</p>
+          <p className="text-gray-600 text-sm">Quantité disponible: {available_quantity}</p>
+          <p className="text-gray-600 text-sm">Emplacement: {location}</p>
+          <p className="text-gray-600 text-sm">Date d'achat: {new Date(purchase_date).toLocaleDateString()}</p>
+          <p className="text-gray-600 text-sm">Référence: {reference}</p> 
+        </div>
+        <button
+          onClick={handleReservation}  // Appeler directement la fonction
+          className="m-auto mb-10 mr-10 bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 h-fit"
+          disabled={isReserved}  // Désactiver le bouton si déjà réservé
+        >
+          {isReserved ? 'Réservé' : 'Réserver'}
+        </button>
       </div>
     </div>
   );
@@ -36,6 +78,7 @@ const Card = ({
 
 // PropTypes pour validation des props
 Card.propTypes = {
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   category_id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired, // Permettre une chaîne ou un nombre
   stock_quantity: PropTypes.number.isRequired,
