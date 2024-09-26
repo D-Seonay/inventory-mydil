@@ -5,6 +5,7 @@ import TableComponent from '../components/TableComponent';
 import DropdownComponent from '../components/DropdownComponent';
 import CategoryPage from './CategoryPage';
 import MaterialPage from './MaterialPage';
+import UsersPage from './UsersPage';
 
 const Admin = () => {
     const location = useLocation();
@@ -58,6 +59,7 @@ const Admin = () => {
                         <MaterialPage />
                     </div>
                 )}
+                {selectedOption === "Liste des utilisateurs" && <UsersPage />}
             </div>
         </div>
     );
