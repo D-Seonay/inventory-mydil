@@ -9,12 +9,15 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  console.log("Token:", localStorage.getItem('token'));
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
     try {
+
       const response = await axios.post('http://localhost:5001/login', { username, password });
       const { token } = response.data;
 

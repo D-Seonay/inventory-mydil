@@ -39,6 +39,26 @@ const getReservations = (req, res) => {
   });
 };
 
+const getUserReservations = (req, res) => {
+  const { userId } = req.query; // Récupérer l'ID de l'utilisateur à partir des paramètres de la requête
+
+  const query = `
+    SELECT reservation.id, equipment.name AS equipment_name, reservation.start_date, reservation.end_date, reservation.status
+    FROM reservation
+    JOIN equipment ON reservation.equipment_id = equipment.id
+    WHERE reservation.user_id = ?
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des réservations de l\'utilisateur:', err);
+      return res.status(500).json({ error: 'Erreur lors de la récupération des réservations', details: err.message });
+    }
+
+    res.json(results); // Renvoyer les réservations de l'utilisateur
+  });
+};
+
 // Mettre à jour une réservation
 const updateReservation = (req, res) => {
   const { id } = req.params;
@@ -69,6 +89,7 @@ const deleteReservation = (req, res) => {
 module.exports = {
   createReservation,
   getReservations,
+  getUserReservations,
   updateReservation,
   deleteReservation,
 };

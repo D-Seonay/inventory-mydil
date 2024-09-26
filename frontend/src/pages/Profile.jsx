@@ -1,49 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 
+
 const Profile = () => {
     
     const [filter, setFilter] = useState('current');
     const [reservations, setReservations] = useState([]);
     const [isHovered, setIsHovered] = useState(false); // Pour gérer l'affichage de l'icône d'édition
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         // Appel à l'API pour récupérer les réservations de l'utilisateur
         const fetchReservations = async () => {
           try {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-            const response = await fetch(`http://localhost:5001/reservations?userId=${userId}`, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
+            const token = sessionStorage.getItem('token'); // Remplacer sessionStorage par localStorage si besoin
+            const userId = 2; // Vérifiez si l'userId est correct dans votre back-end
+
+            console.log("Token récupéré:", token);
+            console.log("UserID récupéré:", userId);
+
+            // Vérifier si le token ou l'userId sont manquants
+            if (!token || !userId) {
+                throw new Error("Token ou userId manquant");
+            }
+
+            const response = await fetch(`http://localhost:5001/userReservations?userId=${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
+
+            // Vérification du statut de la réponse
+            if (!response.ok) {
+                console.log("Erreur lors de la requête:", response.status, response.statusText);
+                if (response.status === 403) {
+                    throw new Error("Accès interdit. Vous n'avez pas les autorisations nécessaires.");
+                } else {
+                    throw new Error(`Erreur ${response.status}: ${response.statusText}`);
+                }
+            }
+
             const data = await response.json();
+            console.log("Réservations récupérées:", data); // Log pour vérifier les données
             setReservations(data);
           } catch (error) {
-            console.error('Erreur lors de la récupération des réservations:', error);
+            console.error('Erreur lors de la récupération des réservations:', error.message);
+            setErrorMessage(error.message); // Stocker l'erreur pour l'afficher dans l'UI
           }
         };
-    
+
         fetchReservations();
     }, []);
 
     const filterReservations = () => {
         const currentDate = new Date();
-        
+
         return reservations.filter(reservation => {
-          const startDate = new Date(reservation.start_date);
-          const endDate = new Date(reservation.end_date);
-    
-          if (filter === 'current') {
-            return startDate <= currentDate && endDate >= currentDate; // Réservations en cours
-          } else if (filter === 'pending') {
-            return reservation.status === 'pending'; // Réservations en attente
-          } else if (filter === 'past') {
-            return endDate < currentDate; // Réservations passées
-          } else {
-            return true;
-          }
+            const startDate = new Date(reservation.start_date);
+            const endDate = new Date(reservation.end_date);
+
+            if (filter === 'current') {
+                return startDate <= currentDate && endDate >= currentDate; // Réservations en cours
+            } else if (filter === 'pending') {
+                return reservation.status === 'pending'; // Réservations en attente
+            } else if (filter === 'past') {
+                return endDate < currentDate; // Réservations passées
+            } else {
+                return true;
+            }
         });
     };
 
