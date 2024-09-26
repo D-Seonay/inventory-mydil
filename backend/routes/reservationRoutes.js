@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post('/reservation', authenticateJWT, createReservation);
 router.get('/reservation', authenticateJWT, getReservations);
-router.get('/userReservations/:id', authenticateJWT,getUserReservations);
+router.get('/userReservations/:id',getUserReservations);
 router.put('/reservation/:id', authenticateJWT, updateReservation);
 router.delete('/reservation/:id', authenticateJWT, deleteReservation);
 
