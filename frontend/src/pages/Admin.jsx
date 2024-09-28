@@ -31,7 +31,14 @@ const Admin = () => {
                     <h1 className="text-3xl font-semibold">Administration</h1>
                     <div className="flex items-center space-x-4 p-2 rounded-full shadow-lg cursor-pointer" onClick={toggleDarkMode}>
                         <i className={`fa-solid fa-${darkMode ? 'sun' : 'moon'} ml-3`}></i>
-                        <div className={`w-10 h-10 ${darkMode ? 'bg-gray-600' : 'bg-gray-300'} rounded-full`}></div>
+                        <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                            <button className=" text-white px-4 py-2" onClick={() => {
+                                localStorage.removeItem('token');
+                                window.location.href = '/logout';
+                            }}>
+                                <i className="fa-solid fa-sign-out-alt"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
